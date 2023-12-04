@@ -1,6 +1,7 @@
 package com.sicredi.desafiovotacao.controller;
 
 import com.sicredi.desafiovotacao.dto.PautaDTO;
+import com.sicredi.desafiovotacao.dto.ResultadoVotacaoDTO;
 import com.sicredi.desafiovotacao.model.Associado;
 import com.sicredi.desafiovotacao.model.Pauta;
 import com.sicredi.desafiovotacao.model.Voto;
@@ -69,7 +70,7 @@ public class PautaController {
     @PatchMapping("/{id}/abrir-votacao")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> abrirVotacao(@PathVariable("id") Long id,
-                                                 @RequestParam(name = "duracao", required = false) Long duracao) {
+                                               @RequestParam(name = "duracao", required = false) Long duracao) {
         Pauta pauta = pautaService.buscarPauta(id);
         pauta.setVotacaoAberta(true);
         pautaService.editarPauta(pauta);
@@ -85,24 +86,25 @@ public class PautaController {
 
     @GetMapping("/{id}/contabilizar-votos")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> contabilizarVotos(@PathVariable("id") Long id) {
+    public ResponseEntity<ResultadoVotacaoDTO> contabilizarVotos(@PathVariable("id") Long id) {
         List<Voto> votosPorPauta = votoService.buscarVotosPorPauta(id);
         return ResponseEntity.ok(calcularResultadoVotacao(votosPorPauta));
     }
 
-    private String calcularResultadoVotacao(List<Voto> votosPorPauta) {
+    private ResultadoVotacaoDTO calcularResultadoVotacao(List<Voto> votosPorPauta) {
         Map<String, Long> contagemPorValor = votosPorPauta.stream()
                 .collect(Collectors.groupingBy(Voto::getOpcao, Collectors.counting()));
 
         long contadorS = contagemPorValor.getOrDefault("S", 0L);
         long contadorN = contagemPorValor.getOrDefault("N", 0L);
+        long totalVotos = votosPorPauta.size();
 
         if (contadorS > contadorN) {
-            return "A quantidade de votos foi: "+ votosPorPauta.size() +" e o resultado final foi: S";
+            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("S").build();
         } else if (contadorS < contadorN) {
-            return "A quantidade de votos foi: "+ votosPorPauta.size() +" e o resultado final foi: N";
+            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("N").build();
         } else {
-            return "A quantidade de votos foi: "+ votosPorPauta.size() +" e o resultado final foi: Empate";
+            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("Empate").build();
         }
     }
 

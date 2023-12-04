@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AssociadoDTO {
-    private String nome;
-    private String cpf;
+public class CpfValidoDTO {
+
+    private String status;
 }

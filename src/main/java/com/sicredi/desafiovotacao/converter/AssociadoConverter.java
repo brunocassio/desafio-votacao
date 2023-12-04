@@ -12,4 +12,8 @@ public class AssociadoConverter {
                 .build();
 
     }
+
+    public static AssociadoDTO convertToDTO(Associado entity) {
+        return AssociadoDTO.builder().cpf(entity.getCpf()).nome(entity.getNome()).build();
+    }
 }
