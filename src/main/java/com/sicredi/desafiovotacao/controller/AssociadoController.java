@@ -8,14 +8,10 @@ import com.sicredi.desafiovotacao.service.AssociadoService;
 import com.sicredi.desafiovotacao.service.ValidaCpfService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/associado")
+@RestController
+@RequestMapping("/v1/associado")
 public class AssociadoController {
 
     private final AssociadoService associadoService;

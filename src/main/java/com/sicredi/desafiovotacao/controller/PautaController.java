@@ -10,7 +10,6 @@ import com.sicredi.desafiovotacao.service.PautaService;
 import com.sicredi.desafiovotacao.service.VotoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("/pauta")
+@RestController
+@RequestMapping("/v1/pauta")
 public class PautaController {
 
     private final PautaService pautaService;
