@@ -115,3 +115,24 @@ A tela do tipo SELECAO exibe uma lista de opções para que o usuário.
 O aplicativo envia uma requisição POST para a url informada e com o body definido pelo objeto dentro de cada item da lista de seleção, quando o mesmo é acionado, semelhando ao funcionamento dos botões da tela FORMULARIO.
 
 # desafio-votacao
+
+### Como executar a aplicação?
+
+- A aplicação é Spring Boot standalone, ou seja, após baixar o codigo, rodar a Main classe DesafioVotacaoApplication.java
+- Nela já está configurado as dependencias do Docker e Postgres (pom.xml), é necessário ter o cliente Docker instalado na sua maquina.
+
+
+### Como testar a aplicação?
+
+- Após executar a aplicação, acesse: http://localhost:8080/swagger-ui/index.html
+- Adicionar os associados primeiro atraves do endpoint POST /v1/associados, nela contém a validação de CPF e é o primeiro passo para continuar o fluxo.
+- Para registrar um voto é necessário primeiro abrir a votação.
+- {id} significa que é o id da pauta cadastrada.
+
+### Como conferir os dados na base de dados?
+
+- A configuração de conexão está no arquivo compose.yaml:
+    - acesse localhost:5050
+    - usuario: admin@localhost.com
+    - senha: admin
+    - Ao clicar em Servers ele pedirá a senha do banco que é: password (todos esses dados estão no compose.yaml)
