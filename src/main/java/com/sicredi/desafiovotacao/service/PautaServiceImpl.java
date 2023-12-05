@@ -2,9 +2,12 @@ package com.sicredi.desafiovotacao.service;
 
 import com.sicredi.desafiovotacao.converter.PautaConverter;
 import com.sicredi.desafiovotacao.dto.PautaDTO;
+import com.sicredi.desafiovotacao.exception.PautaNotFoundException;
 import com.sicredi.desafiovotacao.model.Pauta;
 import com.sicredi.desafiovotacao.repository.PautaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PautaServiceImpl implements PautaService{
@@ -22,7 +25,13 @@ public class PautaServiceImpl implements PautaService{
 
     @Override
     public Pauta buscarPauta(Long id) {
-        return pautaRepository.findById(id).get();
+        return checarSePautaExiste(pautaRepository.findById(id));
+    }
+
+    private Pauta checarSePautaExiste(Optional<Pauta> pauta) {
+        if (pauta.isPresent()) {
+            return pauta.get();
+        } else throw new PautaNotFoundException();
     }
 
     @Override

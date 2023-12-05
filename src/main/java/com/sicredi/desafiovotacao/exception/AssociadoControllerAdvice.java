@@ -22,4 +22,15 @@ public class AssociadoControllerAdvice {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PautaNotFoundException.class)
+    public ErrorDTO handlePautaNotFoundException(PautaNotFoundException ex) {
+        return ErrorDTO.builder()
+                .message("Pauta inexistente!")
+                .status(HttpStatus.NOT_FOUND)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 }

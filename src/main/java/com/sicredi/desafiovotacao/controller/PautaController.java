@@ -2,6 +2,7 @@ package com.sicredi.desafiovotacao.controller;
 
 import com.sicredi.desafiovotacao.dto.PautaDTO;
 import com.sicredi.desafiovotacao.dto.ResultadoVotacaoDTO;
+import com.sicredi.desafiovotacao.exception.PautaNotFoundException;
 import com.sicredi.desafiovotacao.model.Associado;
 import com.sicredi.desafiovotacao.model.Pauta;
 import com.sicredi.desafiovotacao.model.Voto;
