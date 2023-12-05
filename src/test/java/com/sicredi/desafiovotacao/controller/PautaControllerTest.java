@@ -3,7 +3,6 @@ package com.sicredi.desafiovotacao.controller;
 import com.sicredi.desafiovotacao.dto.PautaDTO;
 import com.sicredi.desafiovotacao.model.Associado;
 import com.sicredi.desafiovotacao.model.Pauta;
-import com.sicredi.desafiovotacao.model.Voto;
 import com.sicredi.desafiovotacao.service.AssociadoService;
 import com.sicredi.desafiovotacao.service.PautaService;
 import com.sicredi.desafiovotacao.service.VotoService;

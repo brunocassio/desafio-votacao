@@ -47,7 +47,7 @@ public class AssociadoControllerTest {
         Mockito.when(validaCpfService.validarCpf(Mockito.anyString())).thenReturn(CpfValidoDTO.builder().status("ABLE_TO_VOTE").build());
 
         MvcResult result = mockMvc
-                .perform(post("/associado").content(Responses.EXPECTED_INSERT_REPONSE).contentType(MediaType.APPLICATION_JSON))
+                .perform(post("/v1/associado").content(Responses.EXPECTED_INSERT_REPONSE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
