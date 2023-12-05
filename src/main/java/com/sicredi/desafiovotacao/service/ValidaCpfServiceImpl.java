@@ -14,7 +14,7 @@ public class ValidaCpfServiceImpl implements ValidaCpfService{
        }
     }
 
-    public static boolean isValid(String cpf) {
+    private boolean isValid(String cpf) {
         // Remover caracteres não numéricos
         cpf = cpf.replaceAll("[^0-9]", "");
 

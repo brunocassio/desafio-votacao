@@ -76,7 +76,4 @@ public class PautaControllerTest {
         assertEquals(Responses.EXPECTED_REGISTRAR_VOTO_REPONSE, resp);
 
     }
-
-
-
 }
