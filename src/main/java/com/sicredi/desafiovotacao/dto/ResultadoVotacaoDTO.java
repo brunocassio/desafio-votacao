@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResultadoVotacaoDTO {
-    private long count;
-    private String opcao;
+    private long totalDeVotos;
+    private String resultado;
 }

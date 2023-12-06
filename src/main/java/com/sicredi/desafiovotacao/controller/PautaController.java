@@ -2,13 +2,14 @@ package com.sicredi.desafiovotacao.controller;
 
 import com.sicredi.desafiovotacao.dto.PautaDTO;
 import com.sicredi.desafiovotacao.dto.ResultadoVotacaoDTO;
-import com.sicredi.desafiovotacao.exception.PautaNotFoundException;
+import com.sicredi.desafiovotacao.exception.VotoInvalidoException;
 import com.sicredi.desafiovotacao.model.Associado;
 import com.sicredi.desafiovotacao.model.Pauta;
 import com.sicredi.desafiovotacao.model.Voto;
 import com.sicredi.desafiovotacao.service.AssociadoService;
 import com.sicredi.desafiovotacao.service.PautaService;
 import com.sicredi.desafiovotacao.service.VotoService;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,10 @@ public class PautaController {
     @PostMapping("/{id}/registrar-voto")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> registrarVoto(
-                                @PathVariable("id") Long id,
+                                @PathVariable("id") @Parameter(name = "id", description = "id da Pauta", example = "1") Long id,
                                 @RequestParam("associadoId") Long associadoId,
-                                @RequestParam("voto") String voto) {
+                                @RequestParam("voto") @Parameter(name = "voto", description = "Opção do Voto", example = "S") String voto) {
+        validarVoto(voto);
         Pauta pauta = pautaService.buscarPauta(id);
         if (!pauta.isVotacaoAberta()) {
             return ResponseEntity.ok("Votação encerrada para a pauta: " + pauta.getTitulo());
@@ -69,7 +71,7 @@ public class PautaController {
 
     @PatchMapping("/{id}/abrir-votacao")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> abrirVotacao(@PathVariable("id") Long id,
+    public ResponseEntity<String> abrirVotacao(@PathVariable("id") @Parameter(name = "id", description = "id da Pauta", example = "1") Long id,
                                                @RequestParam(name = "duracao", required = false) Long duracao) {
         Pauta pauta = pautaService.buscarPauta(id);
         pauta.setVotacaoAberta(true);
@@ -86,7 +88,7 @@ public class PautaController {
 
     @GetMapping("/{id}/contabilizar-votos")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResultadoVotacaoDTO> contabilizarVotos(@PathVariable("id") Long id) {
+    public ResponseEntity<ResultadoVotacaoDTO> contabilizarVotos(@PathVariable("id") @Parameter(name = "id", description = "id da Pauta", example = "1") Long id ) {
         List<Voto> votosPorPauta = votoService.buscarVotosPorPauta(id);
         return ResponseEntity.ok(calcularResultadoVotacao(votosPorPauta));
     }
@@ -100,11 +102,11 @@ public class PautaController {
         long totalVotos = votosPorPauta.size();
 
         if (contadorS > contadorN) {
-            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("S").build();
+            return ResultadoVotacaoDTO.builder().totalDeVotos(totalVotos).resultado("S").build();
         } else if (contadorS < contadorN) {
-            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("N").build();
+            return ResultadoVotacaoDTO.builder().totalDeVotos(totalVotos).resultado("N").build();
         } else {
-            return ResultadoVotacaoDTO.builder().count(totalVotos).opcao("Empate").build();
+            return ResultadoVotacaoDTO.builder().totalDeVotos(totalVotos).resultado("Empate").build();
         }
     }
 
@@ -121,5 +123,11 @@ public class PautaController {
         Pauta pauta = pautaService.buscarPauta(id);
         pauta.setVotacaoAberta(false);
         pautaService.editarPauta(pauta);
+    }
+
+    private void validarVoto(String voto) {
+        if (!voto.matches("^[SN]$")) {
+            throw new VotoInvalidoException();
+        }
     }
 }
