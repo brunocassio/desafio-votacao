@@ -134,7 +134,7 @@ O aplicativo envia uma requisição POST para a url informada e com o body defin
 ### Como conferir os dados na base de dados?
 
 - A configuração de conexão está no arquivo compose.yaml:
-    - acesse localhost:5050
+    - acesse localhost:5050 para abrir o pgAdmin no browser
     - usuario: admin@localhost.com
     - senha: admin
     - Ao clicar em Servers ele pedirá a senha do banco que é: password (todos esses dados estão no compose.yaml)
